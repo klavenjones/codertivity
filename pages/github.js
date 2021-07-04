@@ -4,7 +4,7 @@ import { Repo } from '../components/github'
 import { useForm } from 'react-hook-form'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Github() {
   const [repo, setRepo] = React.useState(null)
 
   const [error, setError] = React.useState({
