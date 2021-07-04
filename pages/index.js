@@ -2,69 +2,49 @@ import React from 'react'
 import { fetchRepo } from '../lib/octokit'
 import { Repo } from '../components/github'
 import { useForm } from 'react-hook-form'
+import { useSession, signIn, signOut } from 'next-auth/client'
 import styles from '../styles/Home.module.css'
+import { Tasks } from '../components/tasks/tasks'
 
 export default function Home() {
-  const [repo, setRepo] = React.useState(null)
+  const [session, loading] = useSession()
 
-  const [error, setError] = React.useState({
-    active: false,
-    type: 200,
-    message: ''
-  })
+  // When rendering client side don't display anything until loading is complete
+  if (typeof window !== 'undefined' && loading) return <h1>Loading</h1>
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm()
-
-  const onSubmit = async (data) => {
-    const { owner, repo } = data
-    const repoData = await fetchRepo(owner, repo)
-    if (repoData.status === 404) {
-      setError({
-        active: true,
-        type: repoData.status,
-        message: repoData.message
-      })
-      return
-    }
-    setRepo(repoData)
+  if (!session) {
+    return (
+      <div className='w-full h-full flex justify-center items-center'>
+        <main className='w-full h-screen flex flex-col items-center justify-center space-y-4'>
+          <h1>Not Logged In</h1>
+          <button
+            className='border-2 p-2'
+            onClick={(e) => {
+              e.preventDefault()
+              signIn()
+            }}
+          >
+            Sign in
+          </button>
+        </main>
+      </div>
+    )
   }
 
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        {/* Form Input */}
-        <div className='grid grid-cols-2 py-2'>
-          <div>
-            <input
-              placeholder='Enter repo owner'
-              {...register('owner', { required: true })}
-            />
-            {errors.owner && (
-              <span className='text-red-500'>This Field is required</span>
-            )}
-          </div>
-          <div>
-            <input
-              placeholder='Enter repo name'
-              {...register('repo', { required: true })}
-            />
-            {errors.repo && (
-              <span className='text-red-500'>This Field is required</span>
-            )}
-          </div>
-          <div>
-            <button className='p-4' onClick={handleSubmit(onSubmit)}>
-              Submit
-            </button>
-          </div>
-        </div>
-        {/* Github */}
-        {error && <h1>{error.message}</h1>}
-        {repo && <Repo repo={repo} />}
+    <div className='w-full h-full flex justify-center items-center'>
+      <main className='w-full h-screen flex items-center justify-center'>
+        <h1>Logged In</h1>
+        {console.log('SESSION', session)}
+        <button
+          className='border-2 p-2'
+          onClick={(e) => {
+            e.preventDefault()
+            signOut()
+          }}
+        >
+          Sign Out
+        </button>
       </main>
     </div>
   )
