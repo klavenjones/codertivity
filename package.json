@@ -6,14 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "node server.js",
+    "server-start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@octokit/core": "^3.5.1",
+    "express": "^4.17.1",
     "mongoose": "^5.13.2",
     "next": "11.0.1",
     "next-auth": "^3.27.1",
     "octokit": "^1.1.0",
+    "querystring": "^0.2.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.10.0",

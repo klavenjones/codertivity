@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const Branches = ({ branches }) => {
-  console.log('Branches', branches)
 
   return (
     <>

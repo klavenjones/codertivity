@@ -1,8 +1,11 @@
 import mongoose from 'mongoose'
 
 const BoardSchema = new mongoose.Schema({
+  id: {
+    type: String
+  },
   userId: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -10,13 +13,7 @@ const BoardSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  cards: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Cards',
-      required: true
-    }
-  ]
+  lanes: []
 })
 
-export default mongoose.models.Boards || mongoose.models('Board', BoardSchema)
+export default mongoose.models.Board || mongoose.model('Board', BoardSchema)

@@ -1,10 +1,11 @@
 import React from 'react'
+import dynamic from 'next/dynamic'
 import { fetchRepo } from '../lib/octokit'
 import { Repo } from '../components/github'
 import { useForm } from 'react-hook-form'
 import { useSession, signIn, signOut } from 'next-auth/client'
+import { Tasks } from '../components/tasks'
 import styles from '../styles/Home.module.css'
-import { Tasks } from '../components/tasks/tasks'
 
 export default function Home() {
   const [session, loading] = useSession()
@@ -33,9 +34,8 @@ export default function Home() {
 
   return (
     <div className='w-full h-full flex justify-center items-center'>
-      <main className='w-full h-screen flex items-center justify-center'>
+      <main className='w-full h-screen'>
         <h1>Logged In</h1>
-        {console.log('SESSION', session)}
         <button
           className='border-2 p-2'
           onClick={(e) => {
@@ -45,6 +45,7 @@ export default function Home() {
         >
           Sign Out
         </button>
+        <Tasks />
       </main>
     </div>
   )
